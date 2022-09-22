@@ -24,10 +24,6 @@ class AuthController extends Controller
 
         return response()->json(['error' => 'Unauthorized'], 401);
     }
-
-
-
-
    
     public function logout()
     {
