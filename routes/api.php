@@ -18,11 +18,12 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
-    
+
     Route::post('register','RegisterController@register');
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
+    Route::post('forget_password','PasswordResetController@submitForgetPasswordForm');
 
 });

@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+
+Route::get('passwordreset/{token}','App\Http\Controllers\Api\PasswordResetController@showResetPasswordForm')->name('passwordreset');
+Route::post('resetpasswordpost','App\Http\Controllers\Api\PasswordResetController@submitResetPasswordForm')->name('resetpasswordpost');
