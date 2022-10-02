@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Login;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -14,7 +14,7 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login']]);
     }
 
-    public function login(Request $request)
+    public function login(Login $request)
     {
         $credentials = $request->only('email', 'password');
 
