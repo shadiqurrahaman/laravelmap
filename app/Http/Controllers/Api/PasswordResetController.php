@@ -2,39 +2,45 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Services\MailService;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\ForgetPassword;
+use App\Http\Requests\ResetPassword;
 use DB; 
 use Carbon\Carbon; 
 use App\Models\User; 
-use Mail; 
 use Hash;
 use Illuminate\Support\Str;
 
 class PasswordResetController extends Controller
 {
-    public function submitForgetPasswordForm(Request $request)
+    private $mailService;
+
+    public function __construct(MailService $mailService)
+    {
+      $this->mailService = $mailService;
+    }
+
+    public function submitForgetPasswordForm(ForgetPassword $request)
       {
-          $request->validate([
-              'email' => 'required|email|exists:users',
-          ]);
-  
+        
           $token = Str::random(64);
-  
+          
           DB::table('password_resets')->insert([
               'email' => $request->email, 
               'token' => $token, 
               'created_at' => Carbon::now()
             ]);
   
-          Mail::send('email.forgetPassword', ['token' => $token], function($message) use($request){
-              $message->to($request->email);
-              $message->subject('Reset Password');
-          });
-          
-          return response()->json(['message' => 'Mail Send'], 200);
-        //   return back()->with('message', 'We have e-mailed your password reset link!');
+          $check = $this->mailService->sendEmail(['email'=>$request->email,'token'=>$token]);
+          if($check){
+            return response()->json(['message' => 'Mail Send'], 200);
+          }
+            return response()->json(['message'=>'something went wrong'],401);
+     
+     
       }
+
 
       public function showResetPasswordForm($token) 
       { 
@@ -42,14 +48,11 @@ class PasswordResetController extends Controller
         return view('resetPasswordForm', ['token' => $token]);
       }
 
-     public function submitResetPasswordForm(Request $request)
+
+
+     public function submitResetPasswordForm(ResetPassword $request)
       {
-          $request->validate([
-              'email' => 'required|email|exists:users',
-              'password' => 'required|string|min:6|confirmed',
-              'password_confirmation' => 'required'
-          ]);
-  
+            
           $updatePassword = DB::table('password_resets')
                               ->where([
                                 'email' => $request->email, 
@@ -65,7 +68,7 @@ class PasswordResetController extends Controller
  
           DB::table('password_resets')->where(['email'=> $request->email])->delete();
   
-          return redirect('/login')->with('message', 'Your password has been changed!');
+         return response()->json(['message'=>'password update success fully']);
       }
 
 }
