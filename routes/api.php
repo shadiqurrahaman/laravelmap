@@ -25,5 +25,6 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
     Route::post('forget_password','PasswordResetController@submitForgetPasswordForm');
+    Route::get('/place','PlaceController@getAllPlace');
 
 });

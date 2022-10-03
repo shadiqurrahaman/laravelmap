@@ -19,5 +19,5 @@ class MailService
             return false;
         }
         return true;
-
+    }
 }
