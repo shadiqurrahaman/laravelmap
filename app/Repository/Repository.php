@@ -22,7 +22,7 @@ class Repository implements RepoInterface{
         if($info){
             return $this->model->update($data);
         }
-        return response()->json(['mesage'=>'Model Not Found'],400);
+        return response()->json(['mesage'=>'Model Not Found'],401);
     }
   
     public function delete($id)
