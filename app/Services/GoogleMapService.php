@@ -4,6 +4,10 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 class GoogleMapService
 {   
+
+    //todo
+    //move this to .env config
+    
     private $api_key = '';
     private $api_url_for_address = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
     private $api_url_for_geocode = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';

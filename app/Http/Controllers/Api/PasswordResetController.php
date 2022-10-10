@@ -33,6 +33,7 @@ class PasswordResetController extends Controller
             ]);
   
           $check = $this->mailService->sendEmail(['email'=>$request->email,'token'=>$token]);
+          
           if($check){
             return response()->json(['message' => 'Mail Send'], 200);
           }

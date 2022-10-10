@@ -11,16 +11,16 @@ use App\Repository\UserRepository;
 class RegisterController extends Controller
 {   
     private $auth;
-    private $repository;
+    private $user_repository;
 
-    public function __construct(UserRepository $repository )
-    {   $this->repository = $repository;
+    public function __construct(UserRepository $user_repository )
+    {   $this->user_repository = $user_repository;
         $this->auth = new AuthController();
     }
 
     public function register(Register $request)
     {   
-        $user = $this->repository->create(request(['name', 'email', 'password']));
+        $user = $this->user_repository->create(request(['name', 'email', 'password']));
         if($user){
             $login_request = new Login(request(['email', 'password']));
             return $this->auth->login($login_request);
